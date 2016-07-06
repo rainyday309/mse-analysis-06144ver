@@ -5,3 +5,6 @@
 *.Rproj
 *.csv
 *.doc
+.Rproj.user
+/line_pics
+

@@ -48,6 +48,7 @@ for (i in 20:1) {
 }
 
 colnames(fulltable) <- newnames
+rm(newnames)
 
 
 
@@ -56,6 +57,8 @@ completer <- filter(fulltable,分類=='c')
 completer <- filter(completer, !is.na(pre_FP1_scale1))
 completer <- filter(completer, !is.na(post_FP1_scale1))
 
+rm('premse')
+rm('postmse')
 
 
 ########################
