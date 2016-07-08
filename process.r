@@ -33,14 +33,10 @@ for (i in 1:20) {
 # join original trial data to mse data
 fulltable<-left_join(raw,premse,c("pre_EEG"="name"))
 fulltable<-left_join(fulltable,postmse,c("post_EEG"="name"))
-fulltable$病歷號碼 = NULL
-fulltable$姓名 = NULL
-fulltable$收案日期 = NULL
-fulltable$生日 = NULL
 
 # rename channels from number to position
 
-channels <- c('FP1', 'FP2', 'F7', 'F3', 'FZ', 'F4', 'F8', 'T3', 'C3', 'Cz', 'C4', 'T4', 'T5', 'P3', 'Pz', 'P4', 'T6', 'O1', 'O2', 'Oz')
+channels <- c('FP1', 'FP2', 'F7', 'F3', 'Fz', 'F4', 'F8', 'T3', 'C3', 'Cz', 'C4', 'T4', 'T5', 'P3', 'Pz', 'P4', 'T6', 'O1', 'O2', 'Oz')
 newnames <- colnames(fulltable)
 
 for (i in 20:1) {
@@ -51,12 +47,36 @@ colnames(fulltable) <- newnames
 rm(newnames)
 
 
+# remove Oz data
+fulltable<-fulltable[!grepl(pattern='Oz',x=colnames(fulltable))]
+
 
 # completer: remove drop out cases and those without eeg daa
 completer <- filter(fulltable,分類=='c')
 completer <- filter(completer, !is.na(pre_FP1_scale1))
 completer <- filter(completer, !is.na(post_FP1_scale1))
 
+# clear all unused variables
+rm('mse')
 rm('premse')
 rm('postmse')
+rm('channel_name')
+rm('output_name')
+rm('i')
 
+# read spectral analysis data
+spectral <- read.csv('spectralOutput.csv', header = TRUE, stringsAsFactors=FALSE, fileEncoding="UTF-8")
+prespectral<-spectral[grepl('FX',x=spectral$name),]
+colnames(prespectral)<-paste('pre',colnames(prespectral),sep='_')
+postspectral<-spectral[grepl('FY',x=spectral$name),]
+colnames(postspectral)<-paste('post',colnames(postspectral),sep='_')
+
+# join spectral data to original trial data
+fulltable<-left_join(fulltable,prespectral,c("pre_EEG"="pre_name"))
+fulltable<-left_join(fulltable,postspectral,c("post_EEG"="post_name"))
+completer<-left_join(completer,prespectral,c("pre_EEG"="pre_name"))
+completer<-left_join(completer,postspectral,c("post_EEG"="post_name"))
+
+rm('prespectral')
+rm('postspectral')
+rm('spectral')
