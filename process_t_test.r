@@ -1,6 +1,8 @@
 #process_t_test.r
 #dependency: process.r
 
+library(dplyr)
+
 # completer_means and standard error of total
 completer_means <- data.frame()
 
