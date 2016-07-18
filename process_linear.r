@@ -2,6 +2,8 @@
 #dependency: process.r
 library('stringr')
 
+
+variables <- as.vector(outer(channels, items, paste, sep='_'))
 # model 1: 
 # pre_mse ~ sex + age +HAMD0
 

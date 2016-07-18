@@ -85,3 +85,12 @@ for (i in variables) {
   
 }
 
+# clean up messes
+
+rm(name1)
+rm(name2)
+rm(res)
+rm(variables)
+rm(i)
+rm(this_one)
+t_test_positive <- filter(t_test_results, p_value<0.05)
