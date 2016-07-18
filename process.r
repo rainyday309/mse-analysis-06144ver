@@ -49,7 +49,7 @@ rm(newnames)
 
 # remove Oz data
 fulltable<-fulltable[!grepl(pattern='Oz',x=colnames(fulltable))]
-
+channels <- channels[1:19]
 
 # completer: remove drop out cases and those without eeg daa
 completer <- filter(fulltable,分類=='c')
@@ -76,6 +76,9 @@ fulltable<-left_join(fulltable,prespectral,c("pre_EEG"="pre_name"))
 fulltable<-left_join(fulltable,postspectral,c("post_EEG"="post_name"))
 completer<-left_join(completer,prespectral,c("pre_EEG"="pre_name"))
 completer<-left_join(completer,postspectral,c("post_EEG"="post_name"))
+
+# all items compared list in this object
+items <- c('scale1','scale2','scale3','scale4','scale5','scale6','scale7','scale8','scale9','scale10','meanMse','total_power','delta_abs','theta_abs','alpha_abs','beta_abs','delta_rel','theta_rel','alpha_rel','beta_rel')
 
 rm('prespectral')
 rm('postspectral')
