@@ -66,7 +66,7 @@ rm(temp)
 
 # perform paired t-test on pre-post valus
 variables <- as.vector(outer(channels, items, paste, sep='_'))
-t_test_results <- data.frame(name=character(),p_value=numeric(),difference=numeric(),low_conf_int=numeric(),high_conf_int=numeric(),stringsAsFactors=FALSE)
+t_test_results <- data.frame(name=character(),p_value=numeric(),difference=numeric(),low_conf_int=numeric(),high_conf_int=numeric(),effect_size=numeric(),stringsAsFactors=FALSE)
 
 
 for (i in variables) {
@@ -74,13 +74,16 @@ for (i in variables) {
   name2 <- paste('pre',i,sep='_')
   
   res<-t.test(completer[,name1],completer[,name2],paired=TRUE)
+  r <- cor(completer[,name1],completer[,name2])
+  d <- res$statistic * ((2*(1-r)/length(completer[,name1]))^0.5)
   
-  this_one <- data.frame(name=character(),p_value=numeric(),difference=numeric(),low_conf_int=numeric(),high_conf_int=numeric(),stringsAsFactors=FALSE)
+  this_one <- data.frame(name=character(),p_value=numeric(),difference=numeric(),low_conf_int=numeric(),high_conf_int=numeric(),effect_size=numeric(),stringsAsFactors=FALSE)
   this_one[1,1] = i
   this_one[1,2] = res$p.value
   this_one[1,3] = res$estimate
   this_one[1,4] = res$conf.int[1]
   this_one[1,5] = res$conf.int[2]
+  this_one[1,6] = d
   t_test_results <- rbind(t_test_results, this_one)
   
 }
