@@ -7,6 +7,9 @@ raw<-raw[,1:26]
 # fix typo in original data
 raw$post_EEG[95]="FY158"
 
+# response rate reverse sign, defined as HAMD6-HAMD0/HAMD6
+raw['response_rate'] = -raw['response_rate']
+
 mse <- read.csv('avgOutput0614.csv', header = TRUE, stringsAsFactors=FALSE, fileEncoding="UTF-8")
 premse<-mse[grepl('FX',x=mse$name),]
 colnames(premse)<-gsub(colnames(premse),pattern = 'ch',replacement = 'pre_ch')
