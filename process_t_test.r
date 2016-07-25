@@ -3,68 +3,6 @@
 
 library(dplyr)
 
-# completer_means and standard error of total
-completer_means <- data.frame()
-
-
-for (i in channels) {
-  newname<- paste("pre",i,sep="_")
-  
-  temp<- select(completer, contains(newname))
-  temp<- colMeans(temp)
-  
-  if (length(completer_means)==0) {
-    completer_means <- as.data.frame(temp)
-    colnames(completer_means)<- c("pre_FP1")
-  } else {
-    completer_means[newname] <- temp
-  }
-}
-
-rownames(completer_means) <- sub(rownames(completer_means),pattern = "pre_FP1_",replacement = "")
-
-for (i in channels) {
-  newname<- paste("post",i,sep="_")
-  
-  temp<- select(completer, contains(newname))
-  temp<- colMeans(temp)
-  
-  completer_means[newname] <- temp
-}
-
-
-# standard error
-completer_ses <- data.frame()
-
-for (i in channels) {
-  newname<- paste("pre",i,sep="_")
-  
-  temp<- select(completer, contains(newname))
-  temp<- apply(temp, MARGIN=2, FUN=sd)
-  temp<- temp/sqrt(length(completer[,1]))
-  
-  if (length(completer_ses)==0) {
-    completer_ses <- as.data.frame(temp)
-    colnames(completer_ses)<- c("pre_FP1")
-  } else {
-    completer_ses[newname] <- temp
-  }
-}
-
-rownames(completer_ses) <- sub(rownames(completer_ses),pattern = "pre_FP1_",replacement = "")
-
-for (i in channels) {
-  newname<- paste("post",i,sep="_")
-  
-  temp<- select(completer, contains(newname))
-  temp<- apply(temp, MARGIN=2, FUN=sd)
-  temp<- temp/sqrt(length(completer[,1]))
-  
-  completer_ses[newname] <- temp
-}
-
-rm(newname)
-
 # perform paired t-test on pre-post valus
 variables <- as.vector(outer(channels, items, paste, sep='_'))
 t_test_results <- data.frame(name=character(),p_value=numeric(),difference=numeric(),low_conf_int=numeric(),high_conf_int=numeric(),effect_size=numeric(),stringsAsFactors=FALSE)
