@@ -33,36 +33,37 @@ for (i in channels) {
 }
 
 
-# standard deviation
-completer_sds <- data.frame()
+# standard error
+completer_ses <- data.frame()
 
 for (i in channels) {
   newname<- paste("pre",i,sep="_")
   
   temp<- select(completer, contains(newname))
   temp<- apply(temp, MARGIN=2, FUN=sd)
+  temp<- temp/sqrt(length(completer[,1]))
   
-  if (length(completer_sds)==0) {
-    completer_sds <- as.data.frame(temp)
-    colnames(completer_sds)<- c("pre_FP1")
+  if (length(completer_ses)==0) {
+    completer_ses <- as.data.frame(temp)
+    colnames(completer_ses)<- c("pre_FP1")
   } else {
-    completer_sds[newname] <- temp
+    completer_ses[newname] <- temp
   }
 }
 
-rownames(completer_sds) <- sub(rownames(completer_sds),pattern = "pre_FP1_",replacement = "")
+rownames(completer_ses) <- sub(rownames(completer_ses),pattern = "pre_FP1_",replacement = "")
 
 for (i in channels) {
   newname<- paste("post",i,sep="_")
   
   temp<- select(completer, contains(newname))
   temp<- apply(temp, MARGIN=2, FUN=sd)
+  temp<- temp/sqrt(length(completer[,1]))
   
-  completer_sds[newname] <- temp
+  completer_ses[newname] <- temp
 }
 
 rm(newname)
-rm(temp)
 
 # perform paired t-test on pre-post valus
 variables <- as.vector(outer(channels, items, paste, sep='_'))
@@ -96,4 +97,6 @@ rm(res)
 rm(variables)
 rm(i)
 rm(this_one)
+rm(d)
+rm(r)
 t_test_positive <- filter(t_test_results, p_value<0.05)
