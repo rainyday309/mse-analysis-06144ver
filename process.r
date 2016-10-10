@@ -79,9 +79,15 @@ fulltable<-left_join(fulltable,prespectral,c("pre_EEG"="pre_name"))
 fulltable<-left_join(fulltable,postspectral,c("post_EEG"="post_name"))
 completer<-left_join(completer,prespectral,c("pre_EEG"="pre_name"))
 completer<-left_join(completer,postspectral,c("post_EEG"="post_name"))
+remission <- completer[completer$HAMD6 < 7,]
+responder <- completer[completer$response_rate < -57,]
+non_responder <- completer[!(completer$response_rate < -57),]
 
 # all items compared list in this object
 items <- c('scale1','scale2','scale3','scale4','scale5','scale6','scale7','scale8','scale9','scale10','meanMse','total_power','delta_abs','theta_abs','alpha_abs','beta_abs','delta_rel','theta_rel','alpha_rel','beta_rel')
+
+# Oz left out,  not included in analysis
+channels <- c('FP1', 'FP2', 'F7', 'F3', 'Fz', 'F4', 'F8', 'T3', 'C3', 'Cz', 'C4', 'T4', 'T5', 'P3', 'Pz', 'P4', 'T6', 'O1', 'O2')
 
 rm('prespectral')
 rm('postspectral')

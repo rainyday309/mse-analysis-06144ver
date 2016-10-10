@@ -1,7 +1,7 @@
 #process_t_test.r
 #dependency: process.r
 
-library(dplyr)
+library('dplyr')
 
 # perform paired t-test on pre-post valus
 variables <- as.vector(outer(channels, items, paste, sep='_'))
@@ -32,7 +32,7 @@ for (i in variables) {
 rm(name1)
 rm(name2)
 rm(res)
-rm(variables)
+
 rm(i)
 rm(this_one)
 rm(d)
