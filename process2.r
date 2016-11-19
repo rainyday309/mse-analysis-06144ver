@@ -1,3 +1,3 @@
 # dependency: process.r
-# main goal: compare between responder and non-responder
+# get sub items of hamd and cgi into dataframe
 
