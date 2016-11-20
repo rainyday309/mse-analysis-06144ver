@@ -54,4 +54,23 @@ my_t <- function(input,variables)
   t_test_results
 }
 
-
+t_vs_0 <- my_t <- function(input)
+{
+  
+  # perform paired t-test on pre-post values
+  t_test_results <- data.frame(name=character(),p_value=numeric(),difference=numeric(),low_conf_int=numeric(),high_conf_int=numeric(),stringsAsFactors=FALSE)
+  variables <- names(input)
+  
+  for (stuff in variables) {
+    
+    res<-t.test(input[,stuff])
+    
+    this_one <- data.frame(name=character(),p_value=numeric(),difference=numeric(),low_conf_int=numeric(),high_conf_int=numeric(),stringsAsFactors=FALSE)
+    this_one[1,1] = stuff
+    this_one[1,2] = res$p.value
+    this_one[1,3] = res$estimate
+    this_one[1,4] = res$conf.int[1]
+    this_one[1,5] = res$conf.int[2]
+    t_test_results <- rbind(t_test_results, this_one)}
+  t_test_results
+}
