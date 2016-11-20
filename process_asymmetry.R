@@ -30,7 +30,7 @@ names(difference_lr)<-pair_items
 # check pre-post difference of asymmetry
 # dependency: process_t_test_func.R
 checked_variables <- as.vector(outer(pair,items,paste,sep='_'))
-index_change <- my_t(asymmetries,checked_variables)
+asymmetries_change <- my_t(asymmetries,checked_variables)
 difference_change <- my_t(difference_lr,checked_variables)
 asymmetries_t <- t_vs_0(asymmetries)
-
+difference_t <- t_vs_0(difference_lr)
