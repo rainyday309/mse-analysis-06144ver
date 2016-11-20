@@ -54,7 +54,7 @@ my_t <- function(input,variables)
   t_test_results
 }
 
-t_vs_0 <- my_t <- function(input)
+t_vs_0 <- function(input)
 {
   
   # perform paired t-test on pre-post values
