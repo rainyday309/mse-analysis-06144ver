@@ -29,6 +29,27 @@ process_t <- function(input)
   t_test_results
 }
 
+process_wilcox <- function(input)
+{
+  
+  # perform wilcoxon signed rank sum test
+  variables <- as.vector(outer(channels, items, paste, sep='_'))
+  final_test_results <- data.frame(name=character(),p_value=numeric(),stringsAsFactors=FALSE)
+  
+  for (stuff in variables) {
+    name1 <- paste('post',stuff,sep='_')
+    name2 <- paste('pre',stuff,sep='_')
+    
+    res<-wilcox.test(input[,name1],input[,name2],paired=TRUE)
+    
+    this_one <- data.frame(name=character(),p_value=numeric(),stringsAsFactors=FALSE)
+    this_one[1,1] = stuff
+    this_one[1,2] = res$p.value
+    final_test_results <- rbind(final_test_results, this_one)}
+  final_test_results
+}
+
+
 my_t <- function(input,variables)
 {
   
